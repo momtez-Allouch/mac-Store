@@ -1,170 +1,181 @@
 <script setup>
-import { ref, reactive } from 'vue'
-import { PlusOutlined } from '@ant-design/icons-vue'
-import { message } from 'ant-design-vue'
+import { ref, reactive } from "vue";
+import { PlusOutlined } from "@ant-design/icons-vue";
+import { message } from "ant-design-vue";
 
-import { useRoute, useRouter } from 'vue-router'
+import { useRoute, useRouter } from "vue-router";
 
-const router = useRouter()
+const router = useRouter();
 
-const route = useRoute()
-const id = route.query.id
-let images = []
-const loading = ref(false)
-const Submittingloading = ref(false)
+const route = useRoute();
+const id = route.query.id;
+let images = [];
+const loading = ref(false);
+const Submittingloading = ref(false);
 
 const onFinish = async (values) => {
   if (id) {
     //modifier
     try {
-      Submittingloading.value = true
-      const response = await fetch(`https://server.allouchmomtez0.workers.dev/api/pc/?id=${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formState)
-      })
+      Submittingloading.value = true;
+      const response = await fetch(
+        `https://server.allouchmomtez0.workers.dev/api/pc/?id=${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formState),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Erreur lors de l'ajout du PC")
+        throw new Error("Erreur lors de l'ajout du PC");
       }
 
-      message.success('PC modifiée avec succés')
-      router.push('/')
+      message.success("PC modifiée avec succés");
+      router.push("/");
     } catch (error) {
-      console.log(error)
-      message.error("Une erreur s'est produie")
+      console.log(error);
+      message.error("Une erreur s'est produie");
     }
   } else {
     //ajouter
 
     try {
-      Submittingloading.value = true
-      const response = await fetch('https://server.allouchmomtez0.workers.dev/api/pc', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formState)
-      })
+      Submittingloading.value = true;
+      const response = await fetch(
+        "https://server.allouchmomtez0.workers.dev/api/pc",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formState),
+        }
+      );
 
       if (!response.ok) {
-        throw new Error("Erreur lors de l'ajout du PC")
+        throw new Error("Erreur lors de l'ajout du PC");
       }
 
-      message.success('PC ajoutée avec succés')
-      router.push('/')
+      message.success("PC ajoutée avec succés");
+      router.push("/");
     } catch (error) {
-      message.error("Une erreur s'est produie")
+      message.error("Une erreur s'est produie");
     }
   }
-}
+};
 
 const onFinishFailed = (errorInfo) => {
-  message.error("Une erreur s'est produie")
-}
+  message.error("Une erreur s'est produie");
+};
 const labelCol = {
   style: {
-    width: '150px'
-  }
-}
+    width: "150px",
+  },
+};
 const wrapperCol = {
-  span: 16
-}
+  span: 16,
+};
 
 const formState = reactive({
-  numeroSerie: '',
-  modele: '',
-  anneeSortie: '',
-  processeur: '',
-  memoire: '',
-  etat: '',
-  couleur: '',
-  capaciteStockage: '',
-  typeLangueClavier: '',
-  tailleEcran: '',
-  cycleBatterie: '',
-  touchBar: '',
-  description: '',
+  numeroSerie: "",
+  modele: "",
+  anneeSortie: "",
+  processeur: "",
+  memoire: "",
+  etat: "",
+  couleur: "",
+  capaciteStockage: "",
+  typeLangueClavier: "",
+  tailleEcran: "",
+  cycleBatterie: "",
+  touchBar: "",
+  description: "",
   images: images,
-  prix: '',
-  vendu: ''
-})
+  prix: "",
+  vendu: "",
+});
 
 const fetchPcDetails = async (id) => {
   try {
-    const response = await fetch(`https://server.allouchmomtez0.workers.dev/api/pc/?id=${id}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json'
+    const response = await fetch(
+      `https://server.allouchmomtez0.workers.dev/api/pc/?id=${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
       }
-    })
+    );
 
     if (!response.ok) {
-      throw new Error('Erreur lors de la récupération des détails du PC')
+      throw new Error("Erreur lors de la récupération des détails du PC");
     }
 
-    const data = await response.json()
-    formState.numeroSerie = data[0].numeroSerie
-    formState.modele = data[0].modele
-    formState.anneeSortie = data[0].anneeSortie
-    formState.processeur = data[0].processeur
-    formState.memoire = data[0].memoire
-    formState.etat = data[0].etat
-    formState.couleur = data[0].couleur
-    formState.capaciteStockage = data[0].capaciteStockage
-    formState.typeLangueClavier = data[0].typeLangueClavier
-    formState.tailleEcran = data[0].tailleEcran
-    formState.cycleBatterie = data[0].cycleBatterie
-    formState.touchBar = data[0].touchBar
-    formState.description = data[0].description
-    formState.images = data[0].images
-    formState.prix = data[0].prix
+    const data = await response.json();
+    formState.numeroSerie = data[0].numeroSerie;
+    formState.modele = data[0].modele;
+    formState.anneeSortie = data[0].anneeSortie;
+    formState.processeur = data[0].processeur;
+    formState.memoire = data[0].memoire;
+    formState.etat = data[0].etat;
+    formState.couleur = data[0].couleur;
+    formState.capaciteStockage = data[0].capaciteStockage;
+    formState.typeLangueClavier = data[0].typeLangueClavier;
+    formState.tailleEcran = data[0].tailleEcran;
+    formState.cycleBatterie = data[0].cycleBatterie;
+    formState.touchBar = data[0].touchBar;
+    formState.description = data[0].description;
+    formState.images = data[0].images;
+    formState.prix = data[0].prix;
     if (data[0].vendu == 1) {
-      formState.vendu = true
+      formState.vendu = true;
     } else {
-      formState.vendu = false
+      formState.vendu = false;
     }
   } catch (error) {
-    message.error("Une erreur s'est produite lors de la récupération des détails du PC")
-    router.push('/notFound')
+    message.error(
+      "Une erreur s'est produite lors de la récupération des détails du PC"
+    );
+    router.push("/notFound");
   }
-}
+};
 
 if (id) {
-  fetchPcDetails(id)
+  fetchPcDetails(id);
 }
 
 const handleFileChange = async (info) => {
-  const formData = new FormData()
+  const formData = new FormData();
 
-  formData.append('image', info)
+  formData.append("image", info);
 
   try {
-    loading.value = true
+    loading.value = true;
     const response = await fetch(
-      'https://api.imgbb.com/1/upload?key=3d8f48228f5867b6a9c542e95ae398b5',
+      "https://api.imgbb.com/1/upload?key=3d8f48228f5867b6a9c542e95ae398b5",
       {
-        method: 'POST',
-        body: formData
+        method: "POST",
+        body: formData,
       }
-    )
+    );
 
     if (!response.ok) {
-      throw new Error('Error uploading file')
+      throw new Error("Error uploading file");
     }
 
-    const result = await response.json()
+    const result = await response.json();
 
-    images.push(result.data.display_url)
+    images.push(result.data.display_url);
 
-    console.log('images', images)
-    loading.value = false
+    console.log("images", images);
+    loading.value = false;
   } catch (error) {
-    console.error(error.message)
+    console.error(error.message);
   }
-}
+};
 </script>
 <template>
   <a-form
@@ -189,7 +200,9 @@ const handleFileChange = async (info) => {
         <a-form-item
           name="modele"
           label="Modèle"
-          :rules="[{ required: true, message: 'Veuillez sélectionner une option' }]"
+          :rules="[
+            { required: true, message: 'Veuillez sélectionner une option' },
+          ]"
         >
           <a-radio-group v-model:value="formState.modele">
             <a-radio-button value="Macbook AIR">Macbook AIR</a-radio-button>
@@ -202,7 +215,11 @@ const handleFileChange = async (info) => {
           name="anneeSortie"
           :rules="[{ required: true, message: 'Veuillez remplir ce champ' }]"
         >
-          <a-date-picker v-model:value="formState.anneeSortie" value-format="YYYY" picker="year" />
+          <a-date-picker
+            v-model:value="formState.anneeSortie"
+            value-format="YYYY"
+            picker="year"
+          />
         </a-form-item>
 
         <a-form-item
@@ -216,7 +233,9 @@ const handleFileChange = async (info) => {
         <a-form-item
           name="memoire"
           label="Mémoire"
-          :rules="[{ required: true, message: 'Veuillez sélectionner une option' }]"
+          :rules="[
+            { required: true, message: 'Veuillez sélectionner une option' },
+          ]"
         >
           <a-radio-group v-model:value="formState.memoire">
             <a-radio-button value="8 Go">8 Go</a-radio-button>
@@ -229,7 +248,9 @@ const handleFileChange = async (info) => {
         <a-form-item
           name="etat"
           label="Etat"
-          :rules="[{ required: true, message: 'Veuillez sélectionner une option' }]"
+          :rules="[
+            { required: true, message: 'Veuillez sélectionner une option' },
+          ]"
         >
           <a-radio-group v-model:value="formState.etat">
             <a-radio-button value="correcte">Correcte</a-radio-button>
@@ -241,7 +262,9 @@ const handleFileChange = async (info) => {
         <a-form-item
           name="capaciteStockage"
           label="Capacité de stockage"
-          :rules="[{ required: true, message: 'Veuillez sélectionner une option' }]"
+          :rules="[
+            { required: true, message: 'Veuillez sélectionner une option' },
+          ]"
         >
           <a-radio-group v-model:value="formState.capaciteStockage">
             <a-radio-button value="128 Go">128 Go</a-radio-button>
@@ -252,7 +275,9 @@ const handleFileChange = async (info) => {
           </a-radio-group>
         </a-form-item>
 
-        <a-form-item label="Couleur"> <a-input v-model:value="formState.couleur" /> </a-form-item>
+        <a-form-item label="Couleur">
+          <a-input v-model:value="formState.couleur" />
+        </a-form-item>
 
         <a-form-item label="Type du langue clavier">
           <a-input v-model:value="formState.typeLangueClavier" />
@@ -263,7 +288,9 @@ const handleFileChange = async (info) => {
         <a-form-item
           name="tailleEcran"
           label="Taille écran (pouces)"
-          :rules="[{ required: true, message: 'Veuillez sélectionner une option' }]"
+          :rules="[
+            { required: true, message: 'Veuillez sélectionner une option' },
+          ]"
         >
           <a-radio-group v-model:value="formState.tailleEcran">
             <a-radio-button value='13 "'>13 "</a-radio-button>
@@ -283,7 +310,9 @@ const handleFileChange = async (info) => {
         <a-form-item
           name="touchBar"
           label="Touch Bar"
-          :rules="[{ required: true, message: 'Veuillez sélectionner une option' }]"
+          :rules="[
+            { required: true, message: 'Veuillez sélectionner une option' },
+          ]"
         >
           <a-radio-group v-model:value="formState.touchBar">
             <a-radio-button value="oui">OUI</a-radio-button>
@@ -296,7 +325,7 @@ const handleFileChange = async (info) => {
           name="prix"
           :rules="[{ required: true, message: 'Veuillez remplir ce champ' }]"
         >
-          <a-input-number v-model:value="formState.prix">
+          <a-input-number v-model:value="formState.prix" :min="0">
             <template #addonAfter>TND</template>
           </a-input-number>
         </a-form-item>
@@ -310,7 +339,11 @@ const handleFileChange = async (info) => {
         </a-form-item>
         <div v-if="!id">
           <a-form-item label="Images">
-            <a-upload :action="handleFileChange" list-type="picture-card" @change="handleChange">
+            <a-upload
+              :action="handleFileChange"
+              list-type="picture-card"
+              @change="handleChange"
+            >
               <a-spin v-if="loading"></a-spin>
               <div v-else>
                 <PlusOutlined />
@@ -324,10 +357,15 @@ const handleFileChange = async (info) => {
     <a-form-item
       :wrapper-col="{
         xs: { span: 24, offset: 0 },
-        sm: { span: 16, offset: 8 }
+        sm: { span: 16, offset: 8 },
       }"
     >
-      <a-button type="primary" html-type="submit" :loading="loading" style="width: 50%">
+      <a-button
+        type="primary"
+        html-type="submit"
+        :loading="loading"
+        style="width: 50%"
+      >
         <a-spin v-if="Submittingloading"></a-spin>
         <div v-else>
           <div v-if="id">Modifier</div>
